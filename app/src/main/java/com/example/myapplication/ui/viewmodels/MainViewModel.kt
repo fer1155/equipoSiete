@@ -1,24 +1,22 @@
 package com.example.myapplication.ui.viewmodels
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
-    // Criterio 6: Estado del sonido
-    private val _isSoundEnabled = MutableStateFlow(true)
-    val isSoundEnabled: StateFlow<Boolean> = _isSoundEnabled.asStateFlow()
 
-    // Criterio 4: Estado del contador
-    private val _counter = MutableStateFlow<Int?>(null)
-    val counter: StateFlow<Int?> = _counter.asStateFlow()
+    private val _isSoundEnabled = MutableLiveData(true)
+    val isSoundEnabled: LiveData<Boolean> = _isSoundEnabled
+
+    private val _counter = MutableLiveData<Int?>(null)
+    val counter: LiveData<Int?> = _counter
 
     fun toggleSound() {
-        _isSoundEnabled.value = !_isSoundEnabled.value
+        _isSoundEnabled.value = !(_isSoundEnabled.value ?: true)
     }
 
     fun startCountdown() {
