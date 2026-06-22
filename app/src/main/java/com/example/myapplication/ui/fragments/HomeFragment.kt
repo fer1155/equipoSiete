@@ -13,6 +13,9 @@ import androidx.fragment.app.activityViewModels
 import com.example.myapplication.databinding.FragmentHomeBinding
 import com.example.myapplication.ui.viewmodels.MainViewModel
 import androidx.core.net.toUri
+import androidx.navigation.fragment.findNavController
+import com.example.myapplication.R
+
 
 class HomeFragment : Fragment() {
 
@@ -53,7 +56,7 @@ class HomeFragment : Fragment() {
         // toolbar.btnSound.setOnClickListener { viewModel.toggleSound() }
 
         toolbar.btnInfo.setOnClickListener {
-            // Acción para información
+            findNavController().navigate(R.id.action_homeFragment_to_instructionsFragment)
         }
 
         toolbar.btnAdd.setOnClickListener {
