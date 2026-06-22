@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.myapplication.databinding.FragmentHomeBinding
 import com.example.myapplication.ui.viewmodels.MainViewModel
+import androidx.core.net.toUri
 
 class HomeFragment : Fragment() {
 
@@ -39,7 +40,12 @@ class HomeFragment : Fragment() {
         val toolbar = binding.includeToolbar
         
         toolbar.btnStar.setOnClickListener {
-            // Acción para favoritos
+            val url = "https://play.google.com/store/apps/details?id=com.nequi.MobileApp&hl=es_419&gl=es"
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = url.toUri()
+
+            // 3. Inicia la actividad
+            startActivity(intent)
         }
 
         // El botón de sonido ya tiene el onClick en el XML vinculado al ViewModel
