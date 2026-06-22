@@ -1,13 +1,16 @@
 package com.example.myapplication.ui.viewmodels
 
+import android.app.Application
+import android.media.MediaPlayer
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.myapplication.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class MainViewModel : ViewModel() {
+class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _isSoundEnabled = MutableLiveData(true)
     val isSoundEnabled: LiveData<Boolean> = _isSoundEnabled
@@ -15,8 +18,29 @@ class MainViewModel : ViewModel() {
     private val _counter = MutableLiveData<Int?>(null)
     val counter: LiveData<Int?> = _counter
 
+    private var mediaPlayer: MediaPlayer? = null
+
+    init {
+        setupMediaPlayer()
+    }
+
+    private fun setupMediaPlayer() {
+        mediaPlayer = MediaPlayer.create(getApplication(), R.raw.background_music).apply {
+            isLooping = true
+            if (_isSoundEnabled.value == true) {
+                start()
+            }
+        }
+    }
+
     fun toggleSound() {
-        _isSoundEnabled.value = !(_isSoundEnabled.value ?: true)
+        val newState = !(_isSoundEnabled.value ?: true)
+        _isSoundEnabled.value = newState
+        if (newState) {
+            mediaPlayer?.start()
+        } else {
+            mediaPlayer?.pause()
+        }
     }
 
     fun startCountdown() {
@@ -27,5 +51,11 @@ class MainViewModel : ViewModel() {
             }
             _counter.value = null
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        mediaPlayer?.release()
+        mediaPlayer = null
     }
 }
