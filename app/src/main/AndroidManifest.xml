@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PicoBotella">
         <activity
-            android:name="com.example.picobotella.MainActivity"
+            android:name="com.example.myapplication.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
