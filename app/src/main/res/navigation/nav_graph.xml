@@ -23,10 +23,25 @@
         android:name="com.example.myapplication.ui.fragments.HomeFragment"
         android:label="HomeFragment"
         tools:layout="@layout/fragment_home">
-
+        <action
+            android:id="@+id/action_homeFragment_to_challengeFragment"
+            app:destination="@+id/challengeFragment"/>
         <action
             android:id="@+id/action_homeFragment_to_instructionsFragment"
             app:destination="@id/instructionsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/challengeFragment"
+        android:name="com.example.myapplication.ui.fragments.ChallengeFragment"
+        android:label="Retos"
+        tools:layout="@layout/fragment_challenge">
+
+        <argument
+            android:name="audioWasOn"
+            app:argType="boolean"
+            android:defaultValue="false" />
+
     </fragment>
 
     <fragment
@@ -34,5 +49,7 @@
         android:name="com.example.myapplication.ui.fragments.InstructionsFragment"
         android:label="InstructionsFragment"
         tools:layout="@layout/fragment_instructions"/>
+
+
 
 </navigation>
