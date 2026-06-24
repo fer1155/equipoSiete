@@ -61,6 +61,7 @@ class HomeFragment : Fragment() {
 
         toolbar.btnAdd.setOnClickListener {
             // Acción para agregar
+            findNavController().navigate(R.id.action_homeFragment_to_challengeFragment)
         }
 
         toolbar.btnShare.setOnClickListener {
