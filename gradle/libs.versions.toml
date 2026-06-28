@@ -13,6 +13,7 @@ composeBom = "2024.12.01"
 lifecycle = "2.8.7"
 kotlin = "2.0.21"
 fragmentKtx = "1.8.5"
+ksp = "2.0.21-1.0.28"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -46,3 +47,4 @@ androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lif
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

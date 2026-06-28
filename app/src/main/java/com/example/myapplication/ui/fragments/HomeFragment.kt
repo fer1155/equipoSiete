@@ -46,29 +46,28 @@ class HomeFragment : Fragment() {
             val url = "https://play.google.com/store/apps/details?id=com.nequi.MobileApp&hl=es_419&gl=es"
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = url.toUri()
-
-            // 3. Inicia la actividad
             startActivity(intent)
         }
-
-        // El botón de sonido ya tiene el onClick en el XML vinculado al ViewModel
-        // Pero lo reforzamos aquí si es necesario o lo dejamos que el XML lo maneje.
-        // toolbar.btnSound.setOnClickListener { viewModel.toggleSound() }
 
         toolbar.btnInfo.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_instructionsFragment)
         }
 
         toolbar.btnAdd.setOnClickListener {
-            // Acción para agregar
             findNavController().navigate(R.id.action_homeFragment_to_challengeFragment)
         }
 
         toolbar.btnShare.setOnClickListener {
+            val shareText = """
+                App pico botella
+                Solo los valientes lo juegan !!
+                https://play.google.com/store/apps/details?id=com.nequi.MobileApp&hl=es_419&gl=es
+            """.trimIndent()
+
             val shareIntent = Intent(Intent.ACTION_SEND).apply {
                 type = "text/plain"
-                putExtra(Intent.EXTRA_SUBJECT, "Pico Botella")
-                putExtra(Intent.EXTRA_TEXT, "¡Mira esta app de Pico Botella! https://play.google.com/store/apps/details?id=com.nequi.MobileApp&hl=es_419&gl=es ")
+                putExtra(Intent.EXTRA_SUBJECT, "App pico botella")
+                putExtra(Intent.EXTRA_TEXT, shareText)
             }
             startActivity(Intent.createChooser(shareIntent, "Compartir usando"))
         }
