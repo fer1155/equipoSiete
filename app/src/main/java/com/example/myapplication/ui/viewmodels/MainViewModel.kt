@@ -1,24 +1,46 @@
 package com.example.myapplication.ui.viewmodels
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import android.media.MediaPlayer
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.myapplication.R
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class MainViewModel : ViewModel() {
-    // Criterio 6: Estado del sonido
-    private val _isSoundEnabled = MutableStateFlow(true)
-    val isSoundEnabled: StateFlow<Boolean> = _isSoundEnabled.asStateFlow()
+class MainViewModel(application: Application) : AndroidViewModel(application) {
 
-    // Criterio 4: Estado del contador
-    private val _counter = MutableStateFlow<Int?>(null)
-    val counter: StateFlow<Int?> = _counter.asStateFlow()
+    private val _isSoundEnabled = MutableLiveData(true)
+    val isSoundEnabled: LiveData<Boolean> = _isSoundEnabled
+
+    private val _counter = MutableLiveData<Int?>(null)
+    val counter: LiveData<Int?> = _counter
+
+    private var mediaPlayer: MediaPlayer? = null
+
+    init {
+        setupMediaPlayer()
+    }
+
+    private fun setupMediaPlayer() {
+        mediaPlayer = MediaPlayer.create(getApplication(), R.raw.background_music).apply {
+            isLooping = true
+            if (_isSoundEnabled.value == true) {
+                start()
+            }
+        }
+    }
 
     fun toggleSound() {
-        _isSoundEnabled.value = !_isSoundEnabled.value
+        val newState = !(_isSoundEnabled.value ?: true)
+        _isSoundEnabled.value = newState
+        if (newState) {
+            mediaPlayer?.start()
+        } else {
+            mediaPlayer?.pause()
+        }
     }
 
     fun startCountdown() {
@@ -29,5 +51,11 @@ class MainViewModel : ViewModel() {
             }
             _counter.value = null
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        mediaPlayer?.release()
+        mediaPlayer = null
     }
 }
