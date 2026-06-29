@@ -48,7 +48,14 @@
         android:id="@+id/instructionsFragment"
         android:name="com.example.myapplication.ui.fragments.InstructionsFragment"
         android:label="InstructionsFragment"
-        tools:layout="@layout/fragment_instructions"/>
+        tools:layout="@layout/fragment_instructions">
+
+        <argument
+            android:name="audioWasOn"
+            app:argType="boolean"
+            android:defaultValue="false" />
+
+    </fragment>
 
 
 

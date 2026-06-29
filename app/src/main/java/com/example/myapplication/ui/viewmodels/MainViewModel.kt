@@ -43,6 +43,22 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun isSoundOn(): Boolean {
+        return _isSoundEnabled.value == true
+    }
+
+    fun pauseMusic() {
+        if (_isSoundEnabled.value == true && mediaPlayer?.isPlaying == true) {
+            mediaPlayer?.pause()
+        }
+    }
+
+    fun resumeMusic() {
+        if (_isSoundEnabled.value == true && mediaPlayer?.isPlaying == false) {
+            mediaPlayer?.start()
+        }
+    }
+
     fun startCountdown() {
         viewModelScope.launch {
             for (i in 3 downTo 0) {
