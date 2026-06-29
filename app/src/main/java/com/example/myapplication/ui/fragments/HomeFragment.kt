@@ -50,11 +50,18 @@ class HomeFragment : Fragment() {
         }
 
         toolbar.btnInfo.setOnClickListener {
-            findNavController().navigate(R.id.action_homeFragment_to_instructionsFragment)
+            val bundle = Bundle().apply {
+                putBoolean("audioWasOn", viewModel.isSoundOn())
+            }
+            findNavController().navigate(R.id.action_homeFragment_to_instructionsFragment, bundle)
         }
 
         toolbar.btnAdd.setOnClickListener {
-            findNavController().navigate(R.id.action_homeFragment_to_challengeFragment)
+            val bundle = Bundle().apply {
+                putBoolean("audioWasOn", viewModel.isSoundOn())
+            }
+
+            findNavController().navigate(R.id.action_homeFragment_to_challengeFragment, bundle)
         }
 
         toolbar.btnShare.setOnClickListener {

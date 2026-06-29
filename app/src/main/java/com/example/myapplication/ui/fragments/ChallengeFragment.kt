@@ -15,12 +15,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.adapter.ChallengeAdapter
 import com.example.myapplication.databinding.FragmentChallengeBinding
 import com.example.myapplication.model.Challenge
+import com.example.myapplication.ui.viewmodels.MainViewModel
+import kotlin.getValue
 
 class ChallengeFragment : Fragment() {
 
@@ -29,6 +32,9 @@ class ChallengeFragment : Fragment() {
 
     private val viewModel: ChallengeViewModel by viewModels()
     private lateinit var adapter: ChallengeAdapter
+
+    private var audioWasOn = false
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,12 +55,15 @@ class ChallengeFragment : Fragment() {
         view: View,
         savedInstanceState: Bundle?
     ) {
-        
+        if (audioWasOn) {
+            mainViewModel.pauseMusic()
+        }
+
         super.onViewCreated(view, savedInstanceState)
 
         adapter = ChallengeAdapter(
             mutableListOf(),
-            {},
+            { challenge -> showEditDialog(challenge)},
             {}
         )
 
@@ -68,6 +77,9 @@ class ChallengeFragment : Fragment() {
         viewModel.getListChallenge()
 
         binding.btnBack.setOnClickListener {
+            if (audioWasOn) {
+                mainViewModel.resumeMusic()
+            }
             findNavController().navigateUp()
         }
 
@@ -75,10 +87,13 @@ class ChallengeFragment : Fragment() {
             showAddDialog()
         }
 
-
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
+        audioWasOn = arguments?.getBoolean("audioWasOn") ?: false
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -176,5 +191,87 @@ class ChallengeFragment : Fragment() {
         dialog.show()
     }
 
+    private fun showEditDialog(challenge: Challenge) {
 
+        val view = layoutInflater.inflate(
+            R.layout.dialog_edit_challenge,
+            null
+        )
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(view)
+            .create()
+
+        dialog.setCanceledOnTouchOutside(false)
+
+        val etChallenge = view.findViewById<EditText>(R.id.etChallenge)
+        etChallenge.setText(challenge.description)
+        val btnSave = view.findViewById<Button>(R.id.btnSave)
+        val btnCancel = view.findViewById<Button>(R.id.btnCancel)
+
+        btnSave.isEnabled = false
+
+        btnSave.backgroundTintList =
+            ContextCompat.getColorStateList(
+                requireContext(),
+                R.color.light_grey
+            )
+
+        etChallenge.addTextChangedListener(object : TextWatcher {
+
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {}
+
+            override fun onTextChanged(
+                s: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int
+            ) {
+                val enable = !s.isNullOrBlank()
+                btnSave.isEnabled = enable
+
+                if (enable){
+                    btnSave.backgroundTintList=
+                        ContextCompat.getColorStateList(
+                            requireContext(),
+                            R.color.orange
+                        )
+                }else {
+                    btnSave.backgroundTintList =
+                        ContextCompat.getColorStateList(
+                            requireContext(),
+                            R.color.light_grey
+                        )
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+
+        })
+
+        btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+
+        btnSave.setOnClickListener {
+
+            val challenge = challenge.copy(
+                description = etChallenge.text.toString()
+            )
+
+            viewModel.updateChallenge(challenge)
+
+            viewModel.getListChallenge()
+
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
 }
