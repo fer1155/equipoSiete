@@ -25,17 +25,38 @@ import com.example.myapplication.model.Challenge
 import com.example.myapplication.ui.viewmodels.MainViewModel
 import kotlin.getValue
 
+/**
+ * Fragment encargado de administrar los retos del juego.
+ *
+ * Permite visualizar la lista de retos disponibles, agregar nuevos
+ * retos y editar los ya existentes. Además, controla la reproducción
+ * de la música de fondo mientras el usuario interactúa con esta pantalla.
+ */
 class ChallengeFragment : Fragment() {
 
     private var _binding: FragmentChallengeBinding? = null
     private val binding get() = _binding!!
 
+    /** ViewModel encargado de la gestión de los retos. */
     private val viewModel: ChallengeViewModel by viewModels()
+
+    /** Adaptador utilizado para mostrar la lista de retos. */
     private lateinit var adapter: ChallengeAdapter
 
+    /** Indica si la música estaba activa antes de abrir este fragmento. */
     private var audioWasOn = false
+
+    /** ViewModel compartido para controlar la música de fondo. */
     private val mainViewModel: MainViewModel by activityViewModels()
 
+    /**
+     * Infla el layout del fragmento e inicializa el View Binding.
+     *
+     * @param inflater Inflador utilizado para crear la vista.
+     * @param container Contenedor padre del fragmento.
+     * @param savedInstanceState Estado previamente guardado del fragmento.
+     * @return Vista raíz del fragmento.
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -51,6 +72,13 @@ class ChallengeFragment : Fragment() {
         return binding.root
     }
 
+    /**
+     * Configura la interfaz de usuario, el RecyclerView y los eventos
+     * asociados a la pantalla una vez creada la vista.
+     *
+     * @param view Vista raíz del fragmento.
+     * @param savedInstanceState Estado previamente guardado del fragmento.
+     */
     override fun onViewCreated(
         view: View,
         savedInstanceState: Bundle?
@@ -63,14 +91,14 @@ class ChallengeFragment : Fragment() {
 
         adapter = ChallengeAdapter(
             mutableListOf(),
-            { challenge -> showEditDialog(challenge)},
+            { challenge -> showEditDialog(challenge) },
             {}
         )
 
         binding.rvChallenge.layoutManager = LinearLayoutManager(requireContext())
         binding.rvChallenge.adapter = adapter
 
-        viewModel.listChallenge.observe(viewLifecycleOwner){ lista ->
+        viewModel.listChallenge.observe(viewLifecycleOwner) { lista ->
             adapter.updateList(lista)
         }
 
@@ -89,17 +117,32 @@ class ChallengeFragment : Fragment() {
 
     }
 
+    /**
+     * Obtiene los argumentos enviados al fragmento, incluyendo
+     * el estado de la reproducción de música.
+     *
+     * @param savedInstanceState Estado previamente guardado del fragmento.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         audioWasOn = arguments?.getBoolean("audioWasOn") ?: false
     }
 
+    /**
+     * Libera la referencia del View Binding para evitar fugas de memoria.
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
+    /**
+     * Muestra el diálogo utilizado para registrar un nuevo reto.
+     *
+     * El botón de guardar permanece deshabilitado hasta que el usuario
+     * ingrese una descripción válida.
+     */
     private fun showAddDialog() {
 
         val view = layoutInflater.inflate(
@@ -143,13 +186,13 @@ class ChallengeFragment : Fragment() {
                 val enable = !s.isNullOrBlank()
                 btnSave.isEnabled = enable
 
-                if (enable){
-                    btnSave.backgroundTintList=
+                if (enable) {
+                    btnSave.backgroundTintList =
                         ContextCompat.getColorStateList(
                             requireContext(),
                             R.color.orange
                         )
-                }else {
+                } else {
                     btnSave.backgroundTintList =
                         ContextCompat.getColorStateList(
                             requireContext(),
@@ -165,7 +208,6 @@ class ChallengeFragment : Fragment() {
         btnCancel.setOnClickListener {
             dialog.dismiss()
         }
-
 
         btnSave.setOnClickListener {
 
@@ -187,10 +229,14 @@ class ChallengeFragment : Fragment() {
             }
         }
 
-
         dialog.show()
     }
 
+    /**
+     * Muestra el diálogo para editar un reto existente.
+     *
+     * @param challenge Reto que será modificado.
+     */
     private fun showEditDialog(challenge: Challenge) {
 
         val view = layoutInflater.inflate(
@@ -235,13 +281,13 @@ class ChallengeFragment : Fragment() {
                 val enable = !s.isNullOrBlank()
                 btnSave.isEnabled = enable
 
-                if (enable){
-                    btnSave.backgroundTintList=
+                if (enable) {
+                    btnSave.backgroundTintList =
                         ContextCompat.getColorStateList(
                             requireContext(),
                             R.color.orange
                         )
-                }else {
+                } else {
                     btnSave.backgroundTintList =
                         ContextCompat.getColorStateList(
                             requireContext(),
@@ -257,7 +303,6 @@ class ChallengeFragment : Fragment() {
         btnCancel.setOnClickListener {
             dialog.dismiss()
         }
-
 
         btnSave.setOnClickListener {
 
