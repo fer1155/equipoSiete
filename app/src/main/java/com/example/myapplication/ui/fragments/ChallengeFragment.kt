@@ -26,17 +26,34 @@ import com.example.myapplication.model.Challenge
 import com.example.myapplication.ui.viewmodels.MainViewModel
 import kotlin.getValue
 
+/**
+ * Fragment encargado de administrar los retos del juego.
+ *
+ * Permite visualizar la lista de retos disponibles, agregar nuevos
+ * retos, editarlos o eliminarlos. Además, controla la pausa y reanudación
+ * de la música de fondo al entrar o salir de esta pantalla.
+ */
 class ChallengeFragment : Fragment() {
 
+    /** Binding para acceder a las vistas del fragmento. */
     private var _binding: FragmentChallengeBinding? = null
     private val binding get() = _binding!!
 
+    /** ViewModel encargado de la lógica de gestión de retos. */
     private val viewModel: ChallengeViewModel by viewModels()
+    
+    /** Adaptador para el RecyclerView que muestra la lista de retos. */
     private lateinit var adapter: ChallengeAdapter
 
+    /** Variable para recordar si el audio estaba encendido antes de entrar. */
     private var audioWasOn = false
+    
+    /** ViewModel compartido para controlar el estado del audio global. */
     private val mainViewModel: MainViewModel by activityViewModels()
 
+    /**
+     * Infla el layout del fragmento e inicializa el View Binding.
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -46,13 +63,19 @@ class ChallengeFragment : Fragment() {
         return binding.root
     }
 
+    /**
+     * Configura el RecyclerView, los observadores de LiveData y los listeners
+     * de los botones una vez que la vista ha sido creada.
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        // Pausar música si estaba activa según los requerimientos (Criterio 1 de HU 6.0)
         if (audioWasOn) {
             mainViewModel.pauseMusic()
         }
 
         super.onViewCreated(view, savedInstanceState)
 
+        // Inicializar adaptador con las acciones de editar y eliminar
         adapter = ChallengeAdapter(
             mutableListOf(),
             { challenge -> showEditDialog(challenge) },
@@ -62,12 +85,15 @@ class ChallengeFragment : Fragment() {
         binding.rvChallenge.layoutManager = LinearLayoutManager(requireContext())
         binding.rvChallenge.adapter = adapter
 
+        // Observar cambios en la lista de retos para actualizar la UI
         viewModel.listChallenge.observe(viewLifecycleOwner) { lista ->
             adapter.updateList(lista)
         }
 
+        // Cargar lista inicial
         viewModel.getListChallenge()
 
+        // Botón atrás: reanuda audio si es necesario y navega al Home
         binding.btnBack.setOnClickListener {
             if (audioWasOn) {
                 mainViewModel.resumeMusic()
@@ -75,21 +101,32 @@ class ChallengeFragment : Fragment() {
             findNavController().navigateUp()
         }
 
+        // Botón flotante para agregar reto
         binding.fabAdd.setOnClickListener {
             showAddDialog()
         }
     }
 
+    /**
+     * Recupera argumentos iniciales, como el estado del audio.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         audioWasOn = arguments?.getBoolean("audioWasOn") ?: false
     }
 
+    /**
+     * Limpia el binding al destruir la vista.
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
+    /**
+     * Muestra el diálogo para agregar un nuevo reto (HU 7.0).
+     * Incluye validación del botón guardar (solo se habilita si hay texto).
+     */
     private fun showAddDialog() {
         val view = layoutInflater.inflate(R.layout.dialog_add_challenge, null)
         val dialog = AlertDialog.Builder(requireContext()).setView(view).create()
@@ -126,6 +163,10 @@ class ChallengeFragment : Fragment() {
         dialog.show()
     }
 
+    /**
+     * Muestra el diálogo para editar un reto existente (HU 8.0).
+     * @param challenge El reto a editar.
+     */
     private fun showEditDialog(challenge: Challenge) {
         val view = layoutInflater.inflate(R.layout.dialog_edit_challenge, null)
         val dialog = AlertDialog.Builder(requireContext()).setView(view).create()
@@ -162,6 +203,10 @@ class ChallengeFragment : Fragment() {
         dialog.show()
     }
 
+    /**
+     * Muestra el diálogo de confirmación para eliminar un reto (HU 9.0).
+     * @param challenge El reto a eliminar.
+     */
     private fun showDeleteDialog(challenge: Challenge) {
         val view = layoutInflater.inflate(R.layout.dialog_delete_challenge, null)
         val dialog = AlertDialog.Builder(requireContext()).setView(view).create()
