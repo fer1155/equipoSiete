@@ -51,7 +51,7 @@
                 android:layout_weight="1"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="Información"
-                android:src="@drawable/info"
+                android:src="@drawable/control"
                 app:tint="#FF840B" />
 
             <ImageButton
