@@ -10,7 +10,7 @@
         android:id="@+id/txtTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="¿Desea eliminar el siguiente reto?:"
+        android:text="@string/delete_dialog_title"
         android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -22,7 +22,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:gravity="center"
-        android:text="Descripción del reto"
         android:textColor="@color/black"
         android:textSize="16sp" />
 
@@ -38,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="12dp"
-            android:text="NO"
+            android:text="@string/delete_dialog_no"
             android:textColor="@color/orange"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -49,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:padding="12dp"
-            android:text="SI"
+            android:text="@string/delete_dialog_yes"
             android:textColor="@color/orange"
             android:textSize="16sp"
             android:textStyle="bold" />
