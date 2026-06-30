@@ -6,6 +6,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import com.example.myapplication.ui.viewmodels.ChallengeViewModel
 
 import android.os.Bundle
@@ -91,8 +92,8 @@ class ChallengeFragment : Fragment() {
 
         adapter = ChallengeAdapter(
             mutableListOf(),
-            { challenge -> showEditDialog(challenge) },
-            {}
+            { challenge -> showEditDialog(challenge)},
+            { challenge -> showDeleteDialog(challenge)}
         )
 
         binding.rvChallenge.layoutManager = LinearLayoutManager(requireContext())
@@ -314,6 +315,31 @@ class ChallengeFragment : Fragment() {
 
             viewModel.getListChallenge()
 
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    private fun showDeleteDialog(challenge: Challenge) {
+        val view = layoutInflater.inflate(R.layout.dialog_delete_challenge, null)
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(view)
+            .create()
+        dialog.setCanceledOnTouchOutside(false)
+
+        val txtDescription = view.findViewById<TextView>(R.id.txtDescription)
+        txtDescription.text = challenge.description
+        val btnNo = view.findViewById<TextView>(R.id.btnNo)
+        val btnYes = view.findViewById<TextView>(R.id.btnYes)
+
+        btnNo.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        btnYes.setOnClickListener {
+            viewModel.deleteChallenge(challenge)
+            viewModel.getListChallenge()
             dialog.dismiss()
         }
 
