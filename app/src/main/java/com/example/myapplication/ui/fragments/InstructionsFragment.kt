@@ -1,45 +1,42 @@
 package com.example.myapplication.ui.fragments
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.example.myapplication.databinding.FragmentInstructionsBinding
 import com.example.myapplication.utils.AnimationUtils
-import com.example.myapplication.R
 import androidx.fragment.app.activityViewModels
-import com.example.myapplication.model.Challenge
 import com.example.myapplication.ui.viewmodels.MainViewModel
-import androidx.fragment.app.viewModels
-import com.example.myapplication.ui.viewmodels.ChallengeViewModel
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 /**
- * A simple [Fragment] subclass.
- * Use the [InstructionsFragment.newInstance] factory method to
- * create an instance of this fragment.
+ * Fragment encargado de mostrar las instrucciones del juego.
+ *
+ * Presenta las reglas básicas al usuario, reproduce la animación
+ * ilustrativa de la pantalla y controla el estado de la música de
+ * fondo mientras las instrucciones permanecen visibles.
  */
 class InstructionsFragment : Fragment() {
 
     private var _binding: FragmentInstructionsBinding? = null
     private val binding get() = _binding!!
 
+    /** Indica si la música estaba reproduciéndose antes de abrir el fragmento. */
     private var audioWasOn = false
+
+    /** ViewModel compartido encargado de controlar la música del juego. */
     private val MainViewModel: MainViewModel by activityViewModels()
 
+    /**
+     * Infla el layout del fragmento e inicializa el View Binding.
+     *
+     * @param inflater Inflador utilizado para crear la vista.
+     * @param container Contenedor padre del fragmento.
+     * @param savedInstanceState Estado previamente guardado del fragmento.
+     * @return Vista raíz del fragmento.
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -55,6 +52,17 @@ class InstructionsFragment : Fragment() {
         return binding.root
     }
 
+    /**
+     * Configura la interfaz del fragmento una vez creada la vista.
+     *
+     * Si la música estaba activa al ingresar, esta se pausa mientras
+     * el usuario visualiza las instrucciones. Además, inicia la
+     * animación ilustrativa y configura el botón para regresar a la
+     * pantalla anterior.
+     *
+     * @param view Vista raíz del fragmento.
+     * @param savedInstanceState Estado previamente guardado del fragmento.
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -73,11 +81,20 @@ class InstructionsFragment : Fragment() {
         }
     }
 
+    /**
+     * Libera la referencia del View Binding para evitar fugas de memoria.
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
+    /**
+     * Recupera los argumentos enviados al fragmento, incluyendo el
+     * estado de reproducción de la música.
+     *
+     * @param savedInstanceState Estado previamente guardado del fragmento.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

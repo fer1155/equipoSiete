@@ -8,6 +8,11 @@ android {
     namespace = "com.example.myapplication"
     compileSdk = 35
 
+    buildFeatures {
+        viewBinding = true
+        dataBinding = true  // si ya lo tenías
+    }
+
     defaultConfig {
         applicationId = "com.example.myapplication"
         minSdk = 24
