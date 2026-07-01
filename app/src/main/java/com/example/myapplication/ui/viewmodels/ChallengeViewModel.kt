@@ -34,7 +34,7 @@ class ChallengeViewModel(application: Application) : AndroidViewModel(applicatio
 
     /** Estado observable que indica si existe una operación en progreso. */
     private val _progresState = MutableLiveData(false)
-    val progresState: LiveData<Boolean> = _progresState
+
 
     /**
      * Guarda un nuevo reto en el repositorio.
@@ -54,8 +54,11 @@ class ChallengeViewModel(application: Application) : AndroidViewModel(applicatio
                 challengeRepository.saveChallenge(challenge) { msg ->
                     message(msg)
                 }
+                // Refrescamos la lista después de guardar
+                _listChallenge.value = challengeRepository.getListChallenge()
                 _progresState.value = false
             } catch (e: Exception) {
+                e.printStackTrace()
                 _progresState.value = false
             }
         }
@@ -72,9 +75,9 @@ class ChallengeViewModel(application: Application) : AndroidViewModel(applicatio
                 _listChallenge.value = challengeRepository.getListChallenge()
                 _progresState.value = false
             } catch (e: Exception) {
+                e.printStackTrace()
                 _progresState.value = false
             }
-
         }
     }
 
@@ -82,17 +85,21 @@ class ChallengeViewModel(application: Application) : AndroidViewModel(applicatio
      * Elimina un reto existente del repositorio.
      *
      * @param challenge Reto que será eliminado.
+     * @param onComplete Callback ejecutado al finalizar la operación exitosamente.
      */
-    fun deleteChallenge(challenge: Challenge) {
+    fun deleteChallenge(challenge: Challenge, onComplete: () -> Unit) {
         viewModelScope.launch {
             _progresState.value = true
             try {
                 challengeRepository.deleteChallenge(challenge)
+                // Refrescamos la lista inmediatamente después de borrar
+                _listChallenge.value = challengeRepository.getListChallenge()
                 _progresState.value = false
+                onComplete()
             } catch (e: Exception) {
+                e.printStackTrace()
                 _progresState.value = false
             }
-
         }
     }
 
@@ -100,17 +107,21 @@ class ChallengeViewModel(application: Application) : AndroidViewModel(applicatio
      * Actualiza la información de un reto existente.
      *
      * @param challenge Reto con la información actualizada.
+     * @param onComplete Callback ejecutado al finalizar la operación exitosamente.
      */
-    fun updateChallenge(challenge: Challenge) {
+    fun updateChallenge(challenge: Challenge, onComplete: () -> Unit) {
         viewModelScope.launch {
             _progresState.value = true
             try {
                 challengeRepository.updateRepository(challenge)
+                // Refrescamos la lista después de actualizar
+                _listChallenge.value = challengeRepository.getListChallenge()
                 _progresState.value = false
+                onComplete()
             } catch (e: Exception) {
+                e.printStackTrace()
                 _progresState.value = false
             }
         }
     }
-
 }
