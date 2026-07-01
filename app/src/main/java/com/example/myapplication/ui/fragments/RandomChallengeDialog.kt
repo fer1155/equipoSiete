@@ -8,13 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.myapplication.databinding.DialogRandomChallengeBinding
 import com.example.myapplication.ui.viewmodels.MainViewModel
-import kotlinx.coroutines.CoroutineScope
+import com.example.myapplication.webservice.ApiUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.json.JSONArray
 import java.net.URL
 
 /**
@@ -22,8 +22,8 @@ import java.net.URL
  * el giro de la botella.
  *
  * Además del reto seleccionado, obtiene de manera aleatoria un
- * Pokémon desde una Pokédex pública y muestra su imagen como
- * elemento visual dentro del diálogo.
+ * Pokémon desde una Pokédex pública usando Retrofit y corrutinas
+ * ligadas al ciclo de vida del fragmento.
  */
 class RandomChallengeDialog : DialogFragment() {
 
@@ -32,10 +32,6 @@ class RandomChallengeDialog : DialogFragment() {
 
     /** ViewModel compartido que proporciona el reto aleatorio y controla el estado del juego. */
     private val viewModel: MainViewModel by activityViewModels()
-
-    /** URL del archivo JSON que contiene la información de la Pokédex. */
-    private val POKEDEX_URL =
-        "https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json"
 
     /**
      * Infla el layout del diálogo e inicializa el View Binding.
@@ -96,36 +92,40 @@ class RandomChallengeDialog : DialogFragment() {
     }
 
     /**
-     * Descarga la Pokédex desde Internet, selecciona un Pokémon
+     * Descarga la Pokédex mediante Retrofit, selecciona un Pokémon
      * de manera aleatoria y muestra su imagen dentro del diálogo.
      *
-     * La descarga y el procesamiento del JSON se realizan en un
-     * hilo de entrada/salida para evitar bloquear la interfaz.
+     * Usa [lifecycleScope] para que la corrutina se cancele automáticamente
+     * si el diálogo es destruido antes de que termine la descarga.
      */
     private fun loadRandomPokemon() {
-        CoroutineScope(Dispatchers.IO).launch {
+        lifecycleScope.launch {
             try {
-                val jsonText = URL(POKEDEX_URL).readText()
-                val root = org.json.JSONObject(jsonText)
-                val pokemonArray: JSONArray = root.getJSONArray("pokemon")
-
-                val randomIndex = (0 until pokemonArray.length()).random()
-                val pokemon = pokemonArray.getJSONObject(randomIndex)
-                val imgUrl = pokemon
-                    .getString("img")
-                    .replace("http://", "https://")
-
-                val bitmap: Bitmap = URL(imgUrl).openStream().use { stream ->
-                    BitmapFactory.decodeStream(stream)
+                // Llamada a la API en hilo IO mediante Retrofit (suspend fun)
+                val response = withContext(Dispatchers.IO) {
+                    ApiUtils.apiService.getPokemon()
                 }
 
-                withContext(Dispatchers.Main) {
-                    if (_binding != null) {
-                        binding.imgPokemon.setImageBitmap(bitmap)
+                // Seleccionar un Pokémon aleatorio de la lista
+                val pokemon = response.pokemon.random()
+
+                // Asegurar que la URL use HTTPS
+                val imgUrl = pokemon.img.replace("http://", "https://")
+
+                // Descargar el bitmap en hilo IO
+                val bitmap: Bitmap = withContext(Dispatchers.IO) {
+                    URL(imgUrl).openStream().use { stream ->
+                        BitmapFactory.decodeStream(stream)
                     }
                 }
+
+                // Mostrar la imagen en el hilo principal
+                if (_binding != null) {
+                    binding.imgPokemon.setImageBitmap(bitmap)
+                }
+
             } catch (e: Exception) {
-                android.util.Log.e("PokemonDebug", "Error: ${e.message}", e)
+                android.util.Log.e("PokemonDebug", "Error cargando Pokémon: ${e.message}", e)
             }
         }
     }
