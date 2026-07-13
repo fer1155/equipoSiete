@@ -15,4 +15,14 @@
     <string name="delete_dialog_title">¿Desea eliminar el siguiente reto?:</string>
     <string name="delete_dialog_no">NO</string>
     <string name="delete_dialog_yes">SI</string>
+
+    <!-- Retos -->
+    <string name="title_challenges">Retos</string>
+    <string name="desc_back_button">Regresar</string>
+    <string name="desc_add_challenge">Agregar reto</string>
+    <string name="title_add_challenge">Agregar reto</string>
+    <string name="title_edit_challenge">Editar Reto</string>
+    <string name="hint_write_challenge">Escriba el reto</string>
+    <string name="action_cancel">Cancelar</string>
+    <string name="action_save">Guardar</string>
 </resources>
