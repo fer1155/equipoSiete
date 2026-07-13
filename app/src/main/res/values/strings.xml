@@ -1,3 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">PicoBotella</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Reglas del Juego -->
+    <string name="reglas_toolbar_title">Reglas del Juego</string>
+    <string name="reglas_como_se_juega_title">¿Cómo se juega?</string>
+    <string name="reglas_como_se_juega_desc">Los jugadores forman un círculo y en el centro colocan el dispositivo móvil, luego tocan el botón parpadeante para girar la botella. El jugador que señale la botella debe cumplir el reto que lanza la app, de lo contrario abandona el juego.</string>
+    <string name="reglas_quien_gana_title">¿Quién gana?</string>
+    <string name="reglas_quien_gana_desc">Gana el último jugador que no abandone el juego.</string>
+
+    <!-- Diálogo Eliminar Reto -->
+    <string name="delete_dialog_title">¿Desea eliminar el siguiente reto?:</string>
+    <string name="delete_dialog_no">NO</string>
+    <string name="delete_dialog_yes">SI</string>
+
+    <!-- Retos -->
+    <string name="title_challenges">Retos</string>
+    <string name="desc_back_button">Regresar</string>
+    <string name="desc_add_challenge">Agregar reto</string>
+    <string name="title_add_challenge">Agregar reto</string>
+    <string name="title_edit_challenge">Editar Reto</string>
+    <string name="hint_write_challenge">Escriba el reto</string>
+    <string name="action_cancel">Cancelar</string>
+    <string name="action_save">Guardar</string>
 </resources>

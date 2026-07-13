@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="com.example.myapplication.ui.viewmodels.MainViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Fondo de madera -->
+        <ImageView
+            android:id="@+id/img_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/piso_madera" />
+
+        <!-- Contenedor de la Botella y el Contador -->
+        <FrameLayout
+            android:id="@+id/bottle_container"
+            android:layout_width="320dp"
+            android:layout_height="320dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/img_bottle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/botella" />
+
+            <!-- Texto del contador centrado sobre la botella -->
+            <TextView
+                android:id="@+id/txt_counter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text='@{viewModel.counter != null ? viewModel.counter.toString() : ""}'
+                android:textColor="#FFFFFF"
+                android:textSize="140sp"
+                android:textStyle="bold"
+                android:elevation="50dp"
+                android:shadowColor="#000000"
+                android:shadowDx="4"
+                android:shadowDy="4"
+                android:shadowRadius="15"
+                android:visibility='@{viewModel.counter != null ? View.VISIBLE : View.GONE}'
+                tools:text="3" />
+        </FrameLayout>
+
+        <!-- Toolbar Incluida: Solo pasamos el viewModel -->
+        <include
+            android:id="@+id/include_toolbar"
+            layout="@layout/toolbar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="64dp"
+            android:layout_marginTop="100dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:viewModel="@{viewModel}" />
+
+        <!-- Botón de acción con bordes redondeados -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_spin"
+            android:layout_width="240dp"
+            android:layout_height="72dp"
+            android:layout_marginBottom="80dp"
+            android:text="PRESIÓNAME"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:backgroundTint="#FF840B"
+            app:cornerRadius="36dp"
+            app:elevation="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
