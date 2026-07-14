@@ -1,4 +1,4 @@
-package com.example.myapplication.view.viewmodels
+package com.example.myapplication.viewmodels
 
 import android.app.Application
 import android.media.MediaPlayer

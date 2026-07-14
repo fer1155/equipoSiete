@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.fragments
+package com.example.myapplication.view.fragments
 
 import androidx.fragment.app.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -7,7 +7,7 @@ import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import com.example.myapplication.ui.viewmodels.ChallengeViewModel
+import com.example.myapplication.viewmodels.ChallengeViewModel
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -20,10 +20,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
-import com.example.myapplication.adapter.ChallengeAdapter
+import com.example.myapplication.view.adapter.ChallengeAdapter
 import com.example.myapplication.databinding.FragmentChallengeBinding
 import com.example.myapplication.model.Challenge
-import com.example.myapplication.ui.viewmodels.MainViewModel
+import com.example.myapplication.viewmodels.MainViewModel
 import kotlin.getValue
 
 /**

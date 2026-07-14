@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.example.myapplication.ui.fragments.SplashFragment"
+        android:name="com.example.myapplication.view.fragments.SplashFragment"
         android:label="SplashFragment"
         tools:layout="@layout/fragment_splash">
 
@@ -20,7 +20,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.myapplication.ui.fragments.HomeFragment"
+        android:name="com.example.myapplication.view.fragments.HomeFragment"
         android:label="HomeFragment"
         tools:layout="@layout/fragment_home">
         <action
@@ -33,7 +33,7 @@
 
     <fragment
         android:id="@+id/challengeFragment"
-        android:name="com.example.myapplication.ui.fragments.ChallengeFragment"
+        android:name="com.example.myapplication.view.fragments.ChallengeFragment"
         android:label="Retos"
         tools:layout="@layout/fragment_challenge">
 
@@ -46,7 +46,7 @@
 
     <fragment
         android:id="@+id/instructionsFragment"
-        android:name="com.example.myapplication.ui.fragments.InstructionsFragment"
+        android:name="com.example.myapplication.view.fragments.InstructionsFragment"
         android:label="InstructionsFragment"
         tools:layout="@layout/fragment_instructions">
 

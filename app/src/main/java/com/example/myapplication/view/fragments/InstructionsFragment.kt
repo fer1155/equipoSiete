@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.fragments
+package com.example.myapplication.view.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,7 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.myapplication.databinding.FragmentInstructionsBinding
 import com.example.myapplication.utils.AnimationUtils
 import androidx.fragment.app.activityViewModels
-import com.example.myapplication.ui.viewmodels.MainViewModel
+import com.example.myapplication.viewmodels.MainViewModel
 
 /**
  * Fragment encargado de mostrar las instrucciones del juego.
