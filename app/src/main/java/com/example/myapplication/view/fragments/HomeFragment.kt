@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.fragments
+package com.example.myapplication.view.fragments
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -15,7 +15,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentHomeBinding
-import com.example.myapplication.ui.viewmodels.MainViewModel
+import com.example.myapplication.viewmodels.MainViewModel
 
 
 /**

@@ -1,7 +1,6 @@
 package com.example.myapplication.repository
 
 import android.content.Context
-import com.example.myapplication.adapter.ChallengeAdapter
 import com.example.myapplication.data.ChallengeDB
 import com.example.myapplication.data.ChallengeDao
 import com.example.myapplication.model.Challenge

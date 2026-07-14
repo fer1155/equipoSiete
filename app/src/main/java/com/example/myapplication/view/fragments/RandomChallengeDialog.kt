@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.fragments
+package com.example.myapplication.view.fragments
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -10,7 +10,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.myapplication.databinding.DialogRandomChallengeBinding
-import com.example.myapplication.ui.viewmodels.MainViewModel
+import com.example.myapplication.viewmodels.MainViewModel
 import com.example.myapplication.webservice.ApiUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
